@@ -26,6 +26,7 @@ volatile const uint8_t* response;
 const uint8_t pingResponse[] = { 0x01, 0x01 };
 const uint8_t listPinsResponse[] = { 0x04, 0x01, 0x01, 0x03, 0x05 };
 const uint8_t deviceIdentifierResponse[] = { 0x01, 0x01 };
+const uint8_t deviceVersionResponse[] = { 0x01, 0x80 };
 
 volatile byte responsePosition;
 volatile byte responseLength;
@@ -65,6 +66,11 @@ void receiveEvent(uint8_t howMany)
                     response = deviceIdentifierResponse;
                     responsePosition = 0;
                     responseLength = sizeof(deviceIdentifierResponse);
+                    break;
+                case 0x05:
+                    response = deviceVersionResponse;
+                    responsePosition = 0;
+                    responseLength = sizeof(deviceVersionResponse);
                     break;
                 default:
                     // unknown command
