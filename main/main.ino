@@ -1,15 +1,10 @@
 
 #include "TinyWireS.h"
 
-#define LED 1
-
 bool led_on = true;
 
 void setup()
 {
-    pinMode(LED, OUTPUT);
-    digitalWrite(LED, HIGH);
-    
     TinyWireS.begin(36);
     TinyWireS.onRequest(requestEvent);
     TinyWireS.onReceive(receiveEvent);
