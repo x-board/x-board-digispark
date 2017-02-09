@@ -5,6 +5,11 @@ bool led_on = true;
 
 void setup()
 {
+    pinMode(1, OUTPUT);
+    pinMode(3, OUTPUT);
+    pinMode(4, OUTPUT);
+    pinMode(5, OUTPUT);
+    
     TinyWireS.begin(36);
     TinyWireS.onRequest(requestEvent);
     TinyWireS.onReceive(receiveEvent);
