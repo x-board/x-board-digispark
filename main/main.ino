@@ -108,6 +108,23 @@ void receiveEvent(uint8_t howMany)
                     digitalWrite(pin, value == 1 ? HIGH : LOW);
                     break;
                 }
+                case 0x02:
+                {
+                    if (howMany < 4)
+                    {
+                        return;
+                    }
+                    uint8_t pin = TinyWireS.receive();
+                    uint8_t value = TinyWireS.receive();
+
+                    if (pin != 1 && pin != 4)
+                    {
+                        return;
+                    }
+
+                    analogWrite(pin, value);
+                    break;
+                }
                 default:
                 {
                     // unknown command
