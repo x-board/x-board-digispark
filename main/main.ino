@@ -29,8 +29,8 @@ const uint8_t listCapabilitiesResponse[] = { 11, 0x00, 0xEF, 0x01, 0xEF, 0xFF, 0
 const uint8_t deviceIdentifierResponse[] = { 0x01, 0x01 };
 const uint8_t deviceVersionResponse[] = { 0x01, 0x80 };
 
-volatile byte responsePosition;
-volatile byte responseLength;
+volatile byte responsePosition = 0;
+volatile byte responseLength = 0;
 
 
 void requestEvent()
@@ -40,10 +40,16 @@ void requestEvent()
         TinyWireS.send(response[responsePosition]);
         responsePosition++;
     }
+    else
+    {
+        TinyWireS.send(0x00);
+    }
 }
 
 void receiveEvent(uint8_t howMany)
 {
+    responseLength = 0;
+    
     switch (TinyWireS.receive())
     {
         case 0x00:
