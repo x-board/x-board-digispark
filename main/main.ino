@@ -116,10 +116,15 @@ void receiveEvent(uint8_t howMany)
                 }
                 case 0x02:
                 {
-                    if (howMany < 4)
+                    if (howMany < 5)
                     {
                         return;
                     }
+                    if (TinyWireS.receive() != 0x01)
+                    {
+                        return;
+                    }
+
                     uint8_t pin = TinyWireS.receive();
                     uint8_t value = TinyWireS.receive();
 
