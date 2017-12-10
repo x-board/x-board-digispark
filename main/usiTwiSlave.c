@@ -337,13 +337,13 @@ void usiTwiSlaveInit( uint8_t ownAddress )
   // by the ISRs (USI_START_vect and USI_OVERFLOW_vect).
 
   // Set SCL and SDA as output
-  DDR_USI |= ( 1 << PORT_USI_SCL ) | ( 1 << PORT_USI_SDA );
+  //DDR_USI |= ( 1 << PORT_USI_SCL ) | ( 1 << PORT_USI_SDA );
 
   // set SCL high
-  PORT_USI |= ( 1 << PORT_USI_SCL );
+  //PORT_USI |= ( 1 << PORT_USI_SCL );
 
   // set SDA high
-  PORT_USI |= ( 1 << PORT_USI_SDA );
+  //PORT_USI |= ( 1 << PORT_USI_SDA );
 
   // Set SDA as input
   DDR_USI &= ~( 1 << PORT_USI_SDA );
