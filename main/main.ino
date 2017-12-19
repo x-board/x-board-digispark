@@ -26,7 +26,7 @@ volatile const uint8_t* response;
 const uint8_t pingResponse[] = { 0x01 };
 const uint8_t listPinsResponse[] = { 0x01, 0x01, 0x03, 0x05 };
 const uint8_t listPinsLengthResponse[] = { sizeof(listPinsResponse) };
-const uint8_t listCapabilitiesResponse[] = { 0x00, 0xFE, 0x01, 0xFE, 0xFF, 0x07, 0xFF, 0x01, 0x01, 0x02, 0xEF, 0x01, 0xEF, 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0xFF };
+const uint8_t listCapabilitiesResponse[] = { 0x00, 0xFE, 0x01, 0xFE, 0xFF, 0x05, 0xFF, 0x01, 0x01, 0x02, 0xEF, 0x01, 0xEF, 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0xFF };
 const uint8_t listCapabilitiesLengthResponse[] = { sizeof(listPinsResponse) };
 const uint8_t deviceIdentifierResponse[] = { 0x01 };
 const uint8_t deviceVersionResponse[] = { 0x80 };
@@ -51,14 +51,16 @@ void requestEvent()
 void receiveEvent(uint8_t howMany)
 {
     responseLength = 0;
-    
+
+    howMany--;
     switch (TinyWireS.receive())
     {
         case 0x00:
-            if (howMany < 2)
+            if (howMany < 1)
             {
                 return;
             }
+            howMany--;
             switch (TinyWireS.receive())
             {
                 case 0x01:
@@ -103,18 +105,21 @@ void receiveEvent(uint8_t howMany)
             break;
             
         case 0x01:
-            if (howMany < 2)
+            if (howMany < 1)
             {
                 return;
             }
+            howMany--;
             switch (TinyWireS.receive())
             {
                 case 0x01:
                 {
-                    if (howMany < 4)
+                    if (howMany < 2)
                     {
                         return;
                     }
+                    howMany--;
+                    howMany--;
                     uint8_t pin = TinyWireS.receive();
                     uint8_t value = TinyWireS.receive();
 
@@ -128,20 +133,23 @@ void receiveEvent(uint8_t howMany)
                 }
                 case 0x02:
                 {
-                    if (howMany < 5)
+                    if (howMany < 3)
                     {
                         return;
                     }
+                    howMany--;
                     if (TinyWireS.receive() != 0x01)
                     {
                         return;
                     }
 
+                    howMany--;
+                    howMany--;
                     uint8_t pin = TinyWireS.receive();
                     uint8_t value = TinyWireS.receive();
 
                     if (pin != 1 && pin != 4)
-                    {
+                    { 
                         return;
                     }
 
@@ -159,6 +167,11 @@ void receiveEvent(uint8_t howMany)
         default:
             // unknown command
             break;
+    }
+
+    for (int i = 0; i < howMany; i++)
+    {
+        TinyWireS.receive();
     }
 }
 
