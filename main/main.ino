@@ -35,10 +35,14 @@ volatile byte responseLength = 0;
 
 void requestEvent()
 {
-    if (responsePosition < responseLength)
+    if (responseLength > 0)
     {
-        TinyWireS.send(response[responsePosition]);
-        responsePosition++;
+        for (byte i = 0; i < responseLength; i++)
+        {
+            TinyWireS.send(response[i]);
+        }
+
+        responseLength = 0;
     }
     else
     {
@@ -63,37 +67,30 @@ void receiveEvent(uint8_t howMany)
             {
                 case 0x01:
                     response = pingResponse;
-                    responsePosition = 0;
                     responseLength = sizeof(pingResponse);
                     break;
                 case 0x02:
                     response = listPinsLengthResponse;
-                    responsePosition = 0;
                     responseLength = sizeof(listPinsLengthResponse);
                     break;
                 case 0x03:
                     response = listPinsResponse;
-                    responsePosition = 0;
                     responseLength = sizeof(listPinsResponse);
                     break;
                 case 0x04:
                     response = listCapabilitiesLengthResponse;
-                    responsePosition = 0;
                     responseLength = sizeof(listCapabilitiesLengthResponse);
                     break;
                 case 0x05:
                     response = listCapabilitiesResponse;
-                    responsePosition = 0;
                     responseLength = sizeof(listCapabilitiesResponse);
                     break;
                 case 0x06:
                     response = deviceIdentifierResponse;
-                    responsePosition = 0;
                     responseLength = sizeof(deviceIdentifierResponse);
                     break;
                 case 0x07:
                     response = deviceVersionResponse;
-                    responsePosition = 0;
                     responseLength = sizeof(deviceVersionResponse);
                     break;
                 default:
