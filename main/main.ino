@@ -19,8 +19,6 @@ void loop()
 {
 }
 
-int n = 0;
-
 volatile const uint8_t* response;
 
 const uint8_t pingResponse[] = { 0x01 };
