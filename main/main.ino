@@ -23,11 +23,13 @@ int n = 0;
 
 volatile const uint8_t* response;
 
-const uint8_t pingResponse[] = { 0x01, 0x01 };
-const uint8_t listPinsResponse[] = { 0x04, 0x01, 0x01, 0x03, 0x05 };
-const uint8_t listCapabilitiesResponse[] = { 19, 0x00, 0xFE, 0x01, 0xFE, 0xFF, 0x05, 0xFF, 0x01, 0x01, 0x02, 0xEF, 0x01, 0xEF, 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0xFF };
-const uint8_t deviceIdentifierResponse[] = { 0x01, 0x01 };
-const uint8_t deviceVersionResponse[] = { 0x01, 0x80 };
+const uint8_t pingResponse[] = { 0x01 };
+const uint8_t listPinsResponse[] = { 0x01, 0x01, 0x03, 0x05 };
+const uint8_t listPinsLengthResponse[] = { sizeof(listPinsResponse) };
+const uint8_t listCapabilitiesResponse[] = { 0x00, 0xFE, 0x01, 0xFE, 0xFF, 0x07, 0xFF, 0x01, 0x01, 0x02, 0xEF, 0x01, 0xEF, 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0xFF };
+const uint8_t listCapabilitiesLengthResponse[] = { sizeof(listPinsResponse) };
+const uint8_t deviceIdentifierResponse[] = { 0x01 };
+const uint8_t deviceVersionResponse[] = { 0x80 };
 
 volatile byte responsePosition = 0;
 volatile byte responseLength = 0;
@@ -65,21 +67,31 @@ void receiveEvent(uint8_t howMany)
                     responseLength = sizeof(pingResponse);
                     break;
                 case 0x02:
+                    response = listPinsLengthResponse;
+                    responsePosition = 0;
+                    responseLength = sizeof(listPinsLengthResponse);
+                    break;
+                case 0x03:
                     response = listPinsResponse;
                     responsePosition = 0;
                     responseLength = sizeof(listPinsResponse);
                     break;
-                case 0x03:
+                case 0x04:
+                    response = listCapabilitiesLengthResponse;
+                    responsePosition = 0;
+                    responseLength = sizeof(listCapabilitiesLengthResponse);
+                    break;
+                case 0x05:
                     response = listCapabilitiesResponse;
                     responsePosition = 0;
                     responseLength = sizeof(listCapabilitiesResponse);
                     break;
-                case 0x04:
+                case 0x06:
                     response = deviceIdentifierResponse;
                     responsePosition = 0;
                     responseLength = sizeof(deviceIdentifierResponse);
                     break;
-                case 0x05:
+                case 0x07:
                     response = deviceVersionResponse;
                     responsePosition = 0;
                     responseLength = sizeof(deviceVersionResponse);
