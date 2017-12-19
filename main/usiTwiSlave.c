@@ -337,13 +337,13 @@ void usiTwiSlaveInit( uint8_t ownAddress )
   // by the ISRs (USI_START_vect and USI_OVERFLOW_vect).
 
   // Set SCL and SDA as output
-  //DDR_USI |= ( 1 << PORT_USI_SCL ) | ( 1 << PORT_USI_SDA );
+  DDR_USI |= ( 1 << PORT_USI_SCL ) | ( 1 << PORT_USI_SDA );
 
   // set SCL high
-  //PORT_USI |= ( 1 << PORT_USI_SCL );
+  PORT_USI |= ( 1 << PORT_USI_SCL );
 
   // set SDA high
-  //PORT_USI |= ( 1 << PORT_USI_SDA );
+  PORT_USI |= ( 1 << PORT_USI_SDA );
 
   // Set SDA as input
   DDR_USI &= ~( 1 << PORT_USI_SDA );
@@ -480,7 +480,10 @@ ISR( USI_START_VECTOR )
   // if SDA line was low at SCL edge, then start condition occurred
   if ( !( usi_pins & USI_PINS_SDA ) )
   {
-
+    if (in_transaction)
+    {
+        USI_RECEIVE_CALLBACK();
+    }
     // a Stop Condition did not occur
 
     USICR =
@@ -498,6 +501,7 @@ ISR( USI_START_VECTOR )
          
     //remember that the USI is in a valid i2c transaction
     in_transaction = 1;
+    overflowState = USI_SLAVE_CHECK_ADDRESS;
 
   }
   else
