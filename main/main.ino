@@ -35,14 +35,10 @@ volatile byte responseLength = 0;
 
 void requestEvent()
 {
-    if (responseLength > 0)
+    if (responsePosition < responseLength)
     {
-        for (byte i = 0; i < responseLength; i++)
-        {
-            TinyWireS.send(response[i]);
-        }
-
-        responseLength = 0;
+        TinyWireS.send(response[responsePosition]);
+        responsePosition++;
     }
     else
     {
@@ -68,30 +64,37 @@ void receiveEvent(uint8_t howMany)
                 case 0x01:
                     response = pingResponse;
                     responseLength = sizeof(pingResponse);
+                    responsePosition = 0;
                     break;
                 case 0x02:
                     response = listPinsLengthResponse;
                     responseLength = sizeof(listPinsLengthResponse);
+                    responsePosition = 0;
                     break;
                 case 0x03:
                     response = listPinsResponse;
                     responseLength = sizeof(listPinsResponse);
+                    responsePosition = 0;
                     break;
                 case 0x04:
                     response = listCapabilitiesLengthResponse;
                     responseLength = sizeof(listCapabilitiesLengthResponse);
+                    responsePosition = 0;
                     break;
                 case 0x05:
                     response = listCapabilitiesResponse;
                     responseLength = sizeof(listCapabilitiesResponse);
+                    responsePosition = 0;
                     break;
                 case 0x06:
                     response = deviceIdentifierResponse;
                     responseLength = sizeof(deviceIdentifierResponse);
+                    responsePosition = 0;
                     break;
                 case 0x07:
                     response = deviceVersionResponse;
                     responseLength = sizeof(deviceVersionResponse);
+                    responsePosition = 0;
                     break;
                 default:
                     // unknown command
