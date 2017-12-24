@@ -502,7 +502,6 @@ ISR( USI_START_VECTOR )
     //remember that the USI is in a valid i2c transaction
     in_transaction = 1;
     overflowState = USI_SLAVE_CHECK_ADDRESS;
-
   }
   else
   {
@@ -599,9 +598,6 @@ ISR( USI_OVERFLOW_VECTOR )
       {
         if ( USIDR & 0x01 )
         {
-          // load up the tx buffer with the data to send to the master
-          USI_REQUEST_CALLBACK();
-
           overflowState = USI_SLAVE_SEND_DATA;
         }
         else
@@ -636,6 +632,8 @@ ISR( USI_OVERFLOW_VECTOR )
     // copy data from buffer to USIDR and set USI to shift byte
     // next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
     case USI_SLAVE_SEND_DATA:
+      // load up the tx buffer with the data to send to the master
+      USI_REQUEST_CALLBACK();
       // Get data from Buffer
       if ( txCount )
       {
