@@ -501,7 +501,6 @@ ISR( USI_START_VECTOR )
          
     //remember that the USI is in a valid i2c transaction
     in_transaction = 1;
-    overflowState = USI_SLAVE_CHECK_ADDRESS;
   }
   else
   {
