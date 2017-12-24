@@ -66,32 +66,32 @@ void receiveEvent(uint8_t howMany)
                     responseLength = sizeof(pingResponse);
                     responsePosition = 0;
                     break;
-                case 0x02:
+                case 0x03:
                     response = listPinsLengthResponse;
                     responseLength = sizeof(listPinsLengthResponse);
                     responsePosition = 0;
                     break;
-                case 0x03:
+                case 0x04:
                     response = listPinsResponse;
                     responseLength = sizeof(listPinsResponse);
                     responsePosition = 0;
                     break;
-                case 0x04:
+                case 0x05:
                     response = listCapabilitiesLengthResponse;
                     responseLength = sizeof(listCapabilitiesLengthResponse);
                     responsePosition = 0;
                     break;
-                case 0x05:
+                case 0x06:
                     response = listCapabilitiesResponse;
                     responseLength = sizeof(listCapabilitiesResponse);
                     responsePosition = 0;
                     break;
-                case 0x06:
+                case 0x07:
                     response = deviceIdentifierResponse;
                     responseLength = sizeof(deviceIdentifierResponse);
                     responsePosition = 0;
                     break;
-                case 0x07:
+                case 0x08:
                     response = deviceVersionResponse;
                     responseLength = sizeof(deviceVersionResponse);
                     responsePosition = 0;
