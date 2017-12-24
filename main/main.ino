@@ -26,7 +26,7 @@ const uint8_t listPinsResponse[] = { 0x01, 0x01, 0x03, 0x05 };
 const uint8_t listPinsLengthResponse[] = { sizeof(listPinsResponse) };
 const uint8_t listCapabilitiesResponse[] = { 0x00, 0xFE, 0x01, 0xFE, 0xFF, 0x07, 0xFF, 0x01, 0xFE, 0x01, 0x02, 0xFE, 0x01, 0xFE, 0x01, 0x04, 0xFF, 0xFF, 0xFF};
 const uint8_t listCapabilitiesLengthResponse[] = { 0x00, sizeof(listCapabilitiesResponse) };
-const uint8_t deviceIdentifierResponse[] = { 0x01 };
+const uint8_t deviceIdentifierResponse[] = { 0x00, 0x01 };
 const uint8_t deviceVersionResponse[] = { 0x80 };
 
 volatile byte responsePosition = 0;
