@@ -22,6 +22,7 @@ void loop()
 volatile const uint8_t* response;
 
 const uint8_t pingResponse[] = { 0x01 };
+const uint8_t protocolVersionResponse[] = { 0x00, 0x00, 0x00, 0x01 };
 const uint8_t listPinsResponse[] = { 0x01, 0x01, 0x03, 0x05 };
 const uint8_t listPinsLengthResponse[] = { sizeof(listPinsResponse) };
 const uint8_t listCapabilitiesResponse[] = { 0x00, 0xFE, 0x01, 0xFE, 0xFF, 0x07, 0xFF, 0x01, 0xFE, 0x01, 0x02, 0xFE, 0x01, 0xFE, 0x01, 0x04, 0xFF, 0xFF, 0xFF};
@@ -64,6 +65,11 @@ void receiveEvent(uint8_t howMany)
                 case 0x01:
                     response = pingResponse;
                     responseLength = sizeof(pingResponse);
+                    responsePosition = 0;
+                    break;
+                case 0x02:
+                    response = protocolVersionResponse;
+                    responseLength = sizeof(protocolVersionResponse);
                     responsePosition = 0;
                     break;
                 case 0x03:
