@@ -1,7 +1,11 @@
 
 #include "TinyWireS.h"
+#include "PinState.h"
 
 bool led_on = true;
+
+PinState currentPinStates[6];
+PinState setPinStates[6];
 
 void setup()
 {
@@ -17,6 +21,24 @@ void setup()
 
 void loop()
 {
+    for (int i = 0; i < 6; i++)
+    {
+        if (setPinStates[i] != currentPinStates[i])
+        {
+            switch(setPinStates[i].getPinMode())
+            {
+            case DIGITAL:
+                digitalWrite(i, setPinStates[i].getDigitalValue());
+                break;
+
+            case PWM:
+                analogWrite(i, setPinStates[i].getPwmValue());
+                break;
+            }
+
+            currentPinStates[i] = setPinStates[i];
+        }
+    }
 }
 
 volatile const uint8_t* response;
@@ -132,7 +154,7 @@ void receiveEvent(uint8_t howMany)
                         return;
                     }
 
-                    digitalWrite(pin, value == 1 ? HIGH : LOW);
+                    setPinStates[pin].setDigitalValue(value == 1 ? HIGH : LOW);
                     break;
                 }
                 case 0x02:
@@ -157,7 +179,7 @@ void receiveEvent(uint8_t howMany)
                         return;
                     }
 
-                    analogWrite(pin, value);
+                    setPinStates[pin].setPwmValue(value);
                     break;
                 }
                 default:
