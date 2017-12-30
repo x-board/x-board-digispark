@@ -15,6 +15,7 @@ private:
     PinMode pinMode;
     uint8_t value1;
     uint8_t value2;
+    uint8_t value3;
     
 public:
     PinState()
@@ -22,6 +23,7 @@ public:
         pinMode = NONE;
         value1 = 0;
         value2 = 0;
+        value3 = 0;
     }
 
     PinMode getPinMode()
@@ -51,11 +53,12 @@ public:
         return value1;
     }
 
-    void setDigitalBlink(uint8_t onTime, uint8_t offTime)
+    void setDigitalBlink(uint8_t onTime, uint8_t offTime, uint8_t shiftTime)
     {
         pinMode = DIGITAL_BLINK;
         value1 = onTime;
         value2 = offTime;
+        value3 = shiftTime;
     }
 
     uint8_t getOnTime()
@@ -66,6 +69,11 @@ public:
     uint8_t getOffTime()
     {
         return value2;
+    }
+
+    uint8_t getShiftTime()
+    {
+        return value3;
     }
     
     bool operator==(const PinState& other)
@@ -83,6 +91,7 @@ public:
         pinMode = other.pinMode;
         value1 = other.value1;
         value2 = other.value2;
+        value3 = other.value3;
     }
 };
 

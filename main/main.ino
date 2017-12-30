@@ -49,8 +49,9 @@ void loop()
         case DIGITAL_BLINK:
             uint8_t onTime = currentPinStates[i].getOnTime();
             uint8_t offTime = currentPinStates[i].getOffTime();
+            uint8_t shiftTime = currentPinStates[i].getShiftTime();
             
-            if (time % (((unsigned long)offTime + (unsigned long)onTime) * 100)  >= (unsigned long)offTime * 100)
+            if ((time + (unsigned long)shiftTime * 100) % (((unsigned long)offTime + (unsigned long)onTime) * 100)  >= (unsigned long)offTime * 100)
             {
                 digitalWrite(i, HIGH);
             }
@@ -206,7 +207,7 @@ void receiveEvent(uint8_t howMany)
                 }
                 case 0x04:
                 {
-                    if (howMany < 4)
+                    if (howMany < 5)
                     {
                         return;
                     }
@@ -219,16 +220,18 @@ void receiveEvent(uint8_t howMany)
                     howMany--;
                     howMany--;
                     howMany--;
+                    howMany--;
                     uint8_t pin = TinyWireS.receive();
                     uint8_t onTime = TinyWireS.receive();
                     uint8_t offTime = TinyWireS.receive();
+                    uint8_t shiftTime = TinyWireS.receive();
 
                     if (pin == 0 || pin == 2 || pin > 5)
                     { 
                         return;
                     }
 
-                    setPinStates[pin].setDigitalBlink(onTime, offTime);
+                    setPinStates[pin].setDigitalBlink(onTime, offTime, shiftTime);
                     break;
                 }
                 default:
