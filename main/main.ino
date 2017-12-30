@@ -186,7 +186,7 @@ void receiveEvent(uint8_t howMany)
                         return;
                     }
                     howMany--;
-                    if (TinyWireS.receive() != 0x01)
+                    if (TinyWireS.receive() != 0x02)
                     {
                         return;
                     }
