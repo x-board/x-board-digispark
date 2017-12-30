@@ -51,7 +51,7 @@ void loop()
             uint8_t offTime = currentPinStates[i].getOffTime();
             uint8_t shiftTime = currentPinStates[i].getShiftTime();
             
-            if ((time + (unsigned long)shiftTime * 100) % (((unsigned long)offTime + (unsigned long)onTime) * 100)  >= (unsigned long)offTime * 100)
+            if ((time - (unsigned long)shiftTime * 100) % (((unsigned long)offTime + (unsigned long)onTime) * 100)  <= (unsigned long)onTime * 100)
             {
                 digitalWrite(i, HIGH);
             }
