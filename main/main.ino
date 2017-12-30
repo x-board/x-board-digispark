@@ -39,6 +39,28 @@ void loop()
             currentPinStates[i] = setPinStates[i];
         }
     }
+
+    int time = millis();
+    
+    for (int i = 0; i < 6; i++)
+    {
+        switch(currentPinStates[i].getPinMode())
+        {
+        case DIGITAL_BLINK:
+            uint8_t onTime = currentPinStates[i].getOnTime();
+            uint8_t offTime = currentPinStates[i].getOffTime();
+            
+            if (time % (((unsigned long)offTime + (unsigned long)onTime) * 100)  >= (unsigned long)offTime * 100)
+            {
+                digitalWrite(i, HIGH);
+            }
+            else
+            {
+                digitalWrite(i, LOW);
+            }
+            break;
+        }
+    }
 }
 
 volatile const uint8_t* response;
@@ -180,6 +202,33 @@ void receiveEvent(uint8_t howMany)
                     }
 
                     setPinStates[pin].setPwmValue(value);
+                    break;
+                }
+                case 0x04:
+                {
+                    if (howMany < 4)
+                    {
+                        return;
+                    }
+                    howMany--;
+                    if (TinyWireS.receive() != 0x01)
+                    {
+                        return;
+                    }
+
+                    howMany--;
+                    howMany--;
+                    howMany--;
+                    uint8_t pin = TinyWireS.receive();
+                    uint8_t onTime = TinyWireS.receive();
+                    uint8_t offTime = TinyWireS.receive();
+
+                    if (pin == 0 || pin == 2 || pin > 5)
+                    { 
+                        return;
+                    }
+
+                    setPinStates[pin].setDigitalBlink(onTime, offTime);
                     break;
                 }
                 default:

@@ -5,7 +5,8 @@ enum PinMode
 {
     NONE,
     DIGITAL,
-    PWM
+    PWM,
+    DIGITAL_BLINK
 };
 
 class PinState
@@ -13,11 +14,14 @@ class PinState
 private:
     PinMode pinMode;
     uint8_t value1;
+    uint8_t value2;
     
 public:
     PinState()
     {
         pinMode = NONE;
+        value1 = 0;
+        value2 = 0;
     }
 
     PinMode getPinMode()
@@ -46,10 +50,27 @@ public:
     {
         return value1;
     }
+
+    void setDigitalBlink(uint8_t onTime, uint8_t offTime)
+    {
+        pinMode = DIGITAL_BLINK;
+        value1 = onTime;
+        value2 = offTime;
+    }
+
+    uint8_t getOnTime()
+    {
+        return value1;
+    }
+
+    uint8_t getOffTime()
+    {
+        return value2;
+    }
     
     bool operator==(const PinState& other)
     {
-        return pinMode == other.pinMode && value1 == other.value1;
+        return pinMode == other.pinMode && value1 == other.value1 && value2 == other.value2;
     }
 
     bool operator!=(const PinState& other)
@@ -61,6 +82,7 @@ public:
     {
         pinMode = other.pinMode;
         value1 = other.value1;
+        value2 = other.value2;
     }
 };
 
