@@ -16,7 +16,7 @@ void loop() {
             }
         }
 
-        delay(200);
+        delay(400);
 
         for (int pin = i; pin < 6; pin++)
         {
@@ -26,7 +26,7 @@ void loop() {
             }
         }
         
-        delay(200);
+        delay(400);
     }
 
     delay(1000);
