@@ -1,3 +1,8 @@
+//
+// This file is governed by the MITA license
+// which can be found as MITA.LICENSE in the root of this project
+// (or alternative at mita.jasperhorn.nl)
+//
 
 #define LED_MODEL_A 1
 #define LED_MODEL_B 0

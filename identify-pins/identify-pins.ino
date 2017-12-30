@@ -1,3 +1,9 @@
+//
+// This file is governed by the MITA license
+// which can be found as MITA.LICENSE in the root of this project
+// (or alternative at mita.jasperhorn.nl)
+//
+
 void setup() {
     pinMode(1, OUTPUT);
     pinMode(3, OUTPUT);
